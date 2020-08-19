@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
   formVisibility: boolean = false;
   summaryVisibility: boolean = false;
   displayedColumns: string[] = ['title', 'timestamp'];
-  latestUpdatedNote: object = {};
+  latestUpdatedNote: object = {id:'',title:'',timestamp:''};
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(public global: GlobalService) { }
@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openSummary() {
+    this.latestUpdatedNote = {};
     this.latestUpdatedNote = this.global.notesArr.reduce((a, b) => {
       return a.timestamp > b.timestamp ? a : b;
     })
