@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
   formVisibility: boolean = false;
   summaryVisibility: boolean = false;
   displayedColumns: string[] = ['title', 'timestamp'];
-  latestUpdatedNote: object = {id:'',title:'',timestamp:''};
+  latestUpdatedNote: any = {id:'',title:'',timestamp:''};
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(public global: GlobalService) { }
