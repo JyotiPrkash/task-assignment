@@ -34,27 +34,28 @@ export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['title', 'timestamp'];
   latestUpdatedNote: object = {};
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   constructor(public global: GlobalService) { }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<notesDetails>([]);
     this.dataSource = new MatTableDataSource<notesDetails>(this.global.notesArr);
+
     this.dataSource.sort = this.sort;
-
-
+    setTimeout(() => {
+      document.getElementById('firstCol').click();
+    })
 
   }
 
   openSummary() {
     this.latestUpdatedNote = this.global.notesArr.reduce((a, b) => {
-      return new Date(a.timestamp) > new Date(b.timestamp) ? a : b;
+      return a.timestamp > b.timestamp ? a : b;
     })
-    console.log(this.latestUpdatedNote);
     this.summaryVisibility = !this.summaryVisibility
   }
 
   selectNote(row: object) {
-    console.log(row);
     this.notesObject.id = row['id'];
     this.notesObject.title = row['title'];
     this.notesObject.text = row['text'];
@@ -78,7 +79,6 @@ export class DashboardComponent implements OnInit {
     if (this.notesObject.title != "" && this.notesObject.text != "") {
       if (this.notesObject.id != null && this.notesObject.id != "") { //edit existing
         let index = this.global.notesArr.findIndex(o => o.id === this.notesObject.id);
-        console.log(index)
         this.notesObject.timestamp = String(new Date().getTime());
         this.global.notesArr[index] = this.notesObject;
       } else { //add new 
@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit {
       this.dataSource = new MatTableDataSource<notesDetails>(this.global.notesArr);
       this.dataSource.sort = this.sort;
       this.formVisibility = false;
-    }else{
+    } else {
       console.log("validation error");
     }
 
