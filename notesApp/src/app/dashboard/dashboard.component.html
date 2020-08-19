@@ -1,0 +1,111 @@
+<div class="container-fluid">
+
+    <div class="row content-div">
+        <div class="col-sm-12">
+            <nav class="navbar" style="border-bottom:1px solid #ececec;">
+                Notes
+                <div>
+                    <i class="fa fa-plus" *ngIf="!formVisibility"
+                        (click)="formVisibility = !formVisibility;refreshForm();"></i>&nbsp;
+                    <i class="fa fa-minus" *ngIf="formVisibility" (click)="formVisibility = !formVisibility"></i>&nbsp;
+                    <i class="fa fa-align-justify" (click)="openSummary()"></i>
+                </div>
+
+            </nav>
+            <div class="summary-div" *ngIf="summaryVisibility">
+                <div class="inner-triangle" (click)="summaryVisibility = !summaryVisibility"></div>
+                <div class="row">
+                    <div class="col-sm-12 sum-header">Summary
+                      
+                    </div>
+                    <div class="col-sm-12 sum-body">
+                        <div class="row">
+                            <div class="col-sm-6" >
+                                <span class="sm-big-txt">{{this.global.notesArr.length}}</span> <span class="sm-helper">notes</span>
+                            </div>
+                            <div class="col-sm-6">
+                               <div class="row">
+                                   <div class="col-sm-12">
+                                       last updated
+                                   </div>
+                                   <div class="col-sm-12">
+                                    <span class="sm-details">{{this.latestUpdatedNote.timestamp |  date:'dd/MM/yy HH:mm '}}</span>
+                                    </div>
+                                    <br/>
+                                    <div class="col-sm-12">
+                                        last note updated
+                                    </div>
+                                    <div class="col-sm-12">
+                                     <span class="sm-details">#{{this.latestUpdatedNote.id}} - '{{this.latestUpdatedNote.title}}'</span>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-holder" *ngIf="formVisibility">
+                
+                <div class="row">
+                    <div class="inner-triangle-form" (click)="formVisibility = !formVisibility"></div>
+                    <div class="col-sm-2 title">
+                        <span>Create or Edit </span>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12 ">
+                                Title
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" [disabled]="!isEditableCheck" class="input-ele"
+                                    [(ngModel)]="notesObject.title" placeholder="Some name for my note!">
+                            </div>
+                            <div class="col-sm-2">
+                                <!-- <span>Editable? &nbsp;</span> -->
+                            </div>
+                            <div class="col-sm-4 chkbox-holder">
+                                <label> Editable? &nbsp; &nbsp; </label>
+                                <input type="checkbox" class="chk-box" [disabled]="!isEditableCheck" id="idEditable"
+                                    name="chkbox1" [(ngModel)]="notesObject.editable">
+                                <label for="idEditable">&nbsp;Yes </label>
+                            </div>
+                            <div class="col-sm-12 ">
+                                Text
+                            </div>
+                            <div class="col-sm-12">
+                                <textarea class="text-area" [disabled]="!isEditableCheck" [(ngModel)]="notesObject.text"
+                                    placeholder="Some name for my note!"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="button" class="btn-save" (click)="saveNote()" [disabled]="!isEditableCheck"
+                            value="Save">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <table mat-table [dataSource]="dataSource" matSort class="col-sm-12 tbl-css">
+
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fnc-table-col-header"
+                                style="width:85%"> Title </th>
+                            <td mat-cell *matCellDef="let item" class="fnc-table-content" title={{item.title}}>
+                                {{item.title}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="timestamp">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fnc-table-col-header"
+                                style="width:15%"> Time created </th>
+                            <td mat-cell *matCellDef="let item" class="fnc-table-content" title={{item.timestamp}}>
+                                {{item.timestamp |  date:'dd/MM/yy HH:mm '}} </td>
+                        </ng-container>
+                        <tr mat-header-row style="height: 35px;" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectNote(row)"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
